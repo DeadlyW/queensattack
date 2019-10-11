@@ -1,0 +1,41 @@
+n, k = map(int, input().split())
+r, c = map(int, input().split())
+left = r, 0
+right = r, n + 1
+up = n + 1, c
+down = 0, c
+ru = (r + n + 1 - c, n + 1) if r < c else (n + 1, c - r + n + 1)
+rd = (r + c - n - 1, n + 1) if r + c > n else (0, c + r)
+lu = (n + 1, c + r - n - 1) if r + c > n else (r + c, 0)
+ld = (0, c - r) if r < c else (r - c, 0)
+for _ in range(k):
+    x, y = map(int, input().split())
+    if y == c: # col
+        if x < r:   # below
+            if down[0] < x:
+                down = x, y
+        else:   # above
+            if up[0] > x:
+                up = x, y
+    elif x == r:    # row
+        if y < c:   # left
+            if left[1] < y:
+                left = x, y
+        else:   # right
+            if right[1] > y:
+                right = x, y
+    elif r + c == x + y: # primary diag
+        if x < r: # rd
+            if rd[0] < x:
+                rd = x, y
+        else:   # lu
+            if lu[0] > x:
+                lu = x, y
+    elif r - c == x - y:   # sec diag
+        if x < r:   # ld
+            if ld[0] < x:
+                ld = x, y
+        else:   # ru
+            if ru[0] > x:
+                ru = x, y
+print(right[1] - left[1] + up[0] - down[0] + lu[0] - rd[0] + ru[0] - ld[0] - 8)
